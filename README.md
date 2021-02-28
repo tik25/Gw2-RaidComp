@@ -7,4 +7,5 @@ MakeComp function reqires so called "relevant roles" which are all the roles you
 Roles supported for now are: RoleList = ["solokite", "BT", "lamp", "hfb", "healscg", "cTank", "druid", "epi", "alaren", "bs", "plyon", "hk", "offchrono"]
 and are saved in program data section
 
-RR is NOT yet implemented!
+#Todo:
+add rr, dhum kite, epi, CM compositions
