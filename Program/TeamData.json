@@ -31,13 +31,15 @@
       "druid",
       "alaren",
       "BT",
-      "solokite"
+      "solokite",
+      "offchrono"
     ],
     "galatea": [
       "hfb"
     ],
     "hajid": [
-      "ChronoTank",
+      "cTank",
+      "offchrono",
       "druid",
       "alaren",
       "hfb"
@@ -53,7 +55,8 @@
       "hfb"
     ],
     "anas": [
-      "ChronoTank",
+      "cTank",
+      "offchrono",
       "bs",
       "alaren",
       "hfb",
@@ -63,7 +66,8 @@
       "healscg"
     ],
     "stephane": [
-      "ChronoTank",
+      "cTank",
+      "offchrono",
       "druid",
       "alaren",
       "pylon",

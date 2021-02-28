@@ -11,7 +11,7 @@ import time  # sleep() sekund pocakat, #clear klera
 
 ######################################
 # progam data
-RoleList = ["solokite", "BT", "lamp", "hfb", "healscg", "ChronoTank", "druid", "epi", "alaren", "bs", "plyon", "hk"]
+RoleList = ["solokite", "BT", "lamp", "hfb", "healscg", "cTank", "druid", "epi", "alaren", "bs", "plyon", "hk", "offchrono"]
 clear = lambda: os.system('cls')
 
 
@@ -41,7 +41,7 @@ def get_team_data():
     # roles
     print(
         "input player roles, separated by a single space, for each role. Note that code assumes everyone has a dps role available\n")
-    print("choose from: solokite, BT, lamp, hfb, healscg, ChronoTank, druid, epi, alaren, bs, plyon, hk")
+    print("choose from: solokite, BT, lamp, hfb, healscg, cTank, druid, epi, alaren, bs, plyon, hk, offchrono")
     RoleDict = {}
     for i in players:
         x = input("{}: ".format(i))
@@ -55,15 +55,16 @@ def get_team_data():
     return 0
 
 
-def wing6hfb(perm):
+def MakeComp(perm, RelevantRoles):
     '''Create w6 composition with hfb as offheal and wyvrn kite. requires list of all permutations made from TeamData'''
 
     clear()
     print("Calculating...")
-    RelevantRoles = ["solokite", "druid", "alaren", "hfb", "ChronoTank", "lamp", "DPS"]
+    NumberOfRoles= len(RelevantRoles)
+
     for index, possiblecomp in enumerate(perm):
         for jdex, player in enumerate(possiblecomp):
-            if jdex >= 6:
+            if jdex >= NumberOfRoles:
                 continue
             elif RelevantRoles[jdex] not in RoleDict[player]:
                 perm[index] = None  # isto k false ce klices bool
@@ -76,7 +77,7 @@ def wing6hfb(perm):
     for index, x in enumerate(perm):
         for y in perm[index + 1:]:
             if y:
-                if y[:6] in list(itertools.permutations(x[:6])):
+                if y[:NumberOfRoles] in list(itertools.permutations(x[:NumberOfRoles])):
                     perm[index] = None
                     break
 
@@ -91,7 +92,11 @@ def wing6hfb(perm):
     if x == "y":
         filename = input("enter file name: ")
         with open(str(filename) + ".txt", "w") as file:
-            file.write("solokite\tdruid\talaren\thfb\ttank\tlamp\tDPS\tDPS\tDPS\tDPS\n______________________________________________________________________________\n\n")
+            for role in RelevantRoles:
+                file.write(str(role)+"\t")
+            for i in range(10-NumberOfRoles):
+                file.write("DPS" + "\t")
+            file.write("\n______________________________________________________________________________\n\n")
             for i in compositions:
                 for j in i:
                     file.write(str(j) + "\t")
@@ -100,17 +105,23 @@ def wing6hfb(perm):
         print("\n")
         time.sleep(3)
 
+    # print out results
     clear()
-    print("printing compositions:\n (solokite, druid, alaren, hfb, tank, lamp, DPS, DPS, DPS, DPS)")
+    print("printing compositions:")
+    print([role for role in RelevantRoles]+["DPS" for i in range(10-NumberOfRoles)])
     for i in compositions:
         print(i)
     print("\n")
     input("Press Enter to return to Menu")
 
 
-##################################################
-# main UI
-while (1):
+
+################################################################################
+############################################################################
+############# main UI
+while (1): #i dont really know how to make a "menu" like loop so i improvise
+
+    #check if there is already player data and load it
     try:
         with open("TeamData.json", "r") as file:
             players, RoleDict = json.load(file)
@@ -119,25 +130,36 @@ while (1):
         get_team_data()
         clear()
 
-    ###init
+    ###### init
     print("Initializing...")
     permutacije = list(itertools.permutations(players))
 
     clear()
-    ###
-    print("this is a menu, options:ksoifjrs")  # opcije
+
+    ###### Menu
+    print("this is a menu, options: w6")
     print("\n")
 
-    x = input("input: ")
+    x = input("input: ") #user select an option here
     clear()
-    ###########################################opcije
+    ###########################################possible options:
     if x == "exit":
         break
-    if x == "w6":
+
+    elif x == "w6":
         print("there is multiple compositions available for this raid")
         print("press 1 for hfb variant OR press 2 for healscg + offchrono variant")
         x = input("1, 2: ")
         if x == "1":
-            wing6hfb(permutacije.copy())
+            MakeComp(permutacije.copy(), ["solokite", "druid", "alaren", "hfb", "cTank", "lamp"])
+        elif x == "2":
+            MakeComp(permutacije.copy(), ["solokite", "druid", "alaren", "healscg", "cTank", "lamp",  "offchrono"])
+
+    elif x == "w5":
+        print("there is multiple compositions available for this raid")
+        print("press 1 for SH variant OR press 2 for Dhuum variant")
+        x = input("1, 2: ")
+        if x == "1":
+            print("not yet implemented")
         elif x == "2":
             print("not yet implemented")
