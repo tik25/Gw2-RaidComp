@@ -137,7 +137,13 @@ while (1): #i dont really know how to make a "menu" like loop so i improvise
     clear()
 
     ###### Menu
-    print("this is a menu, options: w6")
+    print("Menu:")
+    print("Current possible commands are:\n")
+    print(chr(7)+"premade compositions: standard, boonthief, w4, w6") #will add dhuum when i add rr and kite and epi
+    print(chr(7)+"Add your own composition: add")
+    print(chr(7)+"Close the program: exit")
+    print(chr(7)+"edit current team: edit")
+    print(chr(7)+"Make a new team: new")
     print("\n")
 
     x = input("input: ") #user select an option here
@@ -146,6 +152,12 @@ while (1): #i dont really know how to make a "menu" like loop so i improvise
     if x == "exit":
         break
 
+    elif x == "standard":
+        MakeComp(permutacije.copy(), ["cTank", "druid", "bs",  "alaren", "hfb"])
+    elif x == "boonthief":
+        MakeComp(permutacije.copy(), ["BT", "druid", "bs",  "alaren", "healscg"])
+    elif x == "w4":
+        MakeComp(permutacije.copy(), ["cTank", "druid", "bs",  "alaren", "hfb", "hk"])
     elif x == "w6":
         print("there is multiple compositions available for this raid")
         print("press 1 for hfb variant OR press 2 for healscg + offchrono variant")
@@ -155,11 +167,7 @@ while (1): #i dont really know how to make a "menu" like loop so i improvise
         elif x == "2":
             MakeComp(permutacije.copy(), ["solokite", "druid", "alaren", "healscg", "cTank", "lamp",  "offchrono"])
 
-    elif x == "w5":
-        print("there is multiple compositions available for this raid")
-        print("press 1 for SH variant OR press 2 for Dhuum variant")
-        x = input("1, 2: ")
-        if x == "1":
-            print("not yet implemented")
-        elif x == "2":
-            print("not yet implemented")
+
+    elif x=="new":
+        get_team_data()
+
