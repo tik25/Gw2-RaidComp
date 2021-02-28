@@ -1,0 +1,76 @@
+[
+  [
+    "flawless",
+    "montazar",
+    "robin",
+    "galatea",
+    "hajid",
+    "duffas",
+    "onrgnn",
+    "anas",
+    "stephane",
+    "pete"
+  ],
+  {
+    "flawless": [
+      "lamp",
+      "pylon"
+    ],
+    "montazar": [
+      "druid",
+      "bs",
+      "alaren",
+      "hfb",
+      "pylon",
+      "hk",
+      "lamp",
+      "BT",
+      "healscg"
+    ],
+    "robin": [
+      "druid",
+      "alaren",
+      "BT",
+      "solokite"
+    ],
+    "galatea": [
+      "hfb"
+    ],
+    "hajid": [
+      "ChronoTank",
+      "druid",
+      "alaren",
+      "hfb"
+    ],
+    "duffas": [
+      "pylon",
+      "lamp"
+    ],
+    "onrgnn": [
+      "bs",
+      "alaren",
+      "druid",
+      "hfb"
+    ],
+    "anas": [
+      "ChronoTank",
+      "bs",
+      "alaren",
+      "hfb",
+      "pylon",
+      "hk",
+      "BT",
+      "healscg"
+    ],
+    "stephane": [
+      "ChronoTank",
+      "druid",
+      "alaren",
+      "pylon",
+      "solokite"
+    ],
+    "pete": [
+      "alaren"
+    ]
+  }
+]
