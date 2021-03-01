@@ -3,14 +3,15 @@ import itertools
 import json
 import os
 import time  # sleep() sekund pocakat, #clear klera
+import random
 
 # izbolsave ##########################
 # dodaj edit team data
 # dodaj se en dict z clasi da pol mas moznost optimize for dps  recimo pol gleda da majo dps mirage
 
-
 ######################################
 # progam data
+
 RoleList = ["solokite", "BT", "lamp", "hfb", "healscg", "cTank", "druid", "epi", "alaren", "bs", "plyon", "hk", "offchrono"]
 clear = lambda: os.system('cls')
 
@@ -54,6 +55,19 @@ def get_team_data():
     print("Press Enter to return to Menu")
     return 0
 
+
+def PickRandom(compositions, RelevantRoles, NumberOfRoles):
+    RandomComp = compositions[random.randint(0, len(compositions) - 1)]  # picks random composition from list
+
+    roles = [role for role in RelevantRoles] + ["DPS" for i in range(10 - NumberOfRoles)]
+    Dict = {}
+    for index, role in enumerate(roles):
+        try:
+            Dict[role].append(RandomComp[index])
+        except:
+            Dict[role] = [RandomComp[index]]
+
+    return Dict
 
 def MakeComp(perm, RelevantRoles, pylon=False):
     '''Create all possible compositions from list "RelevantRoles".
@@ -121,9 +135,23 @@ def MakeComp(perm, RelevantRoles, pylon=False):
     # print out results
     clear()
     print("printing compositions:")
-    print([role for role in RelevantRoles]+["DPS" for i in range(10-NumberOfRoles)])
+    print("ROLE ODRER:", [role for role in RelevantRoles] + ["DPS" for i in range(10 - NumberOfRoles)])
     for i in compositions:
         print(i)
+    print("ROLE ORDER:", [role for role in RelevantRoles] + ["DPS" for i in range(10 - NumberOfRoles)])
+    print("\n")
+
+    # make radom comp pick
+    pick = "y"
+    while (pick == "y"):
+        print("Randomly selected composition: ")
+        Dict = PickRandom(compositions, RelevantRoles, NumberOfRoles)
+        d1 = dict(list(Dict.items())[len(Dict) // 2:])
+        d2 = dict(list(Dict.items())[:len(Dict) // 2])
+        print("\t".join("{} > {}".format(k, v) for k, v in d2.items()))
+        print("\t".join("{} > {}".format(k, v) for k, v in d1.items()))
+        print("\nPick again?")
+        pick = input("y/n: ")
     print("\n")
     input("Press Enter to return to Menu")
 
@@ -151,22 +179,21 @@ while (1):  # i dont really know how to make a "menu" like loop so i improvise
     ###### Menu
     print("Menu:")
     print("Current possible commands are:\n")
-    print(chr(7) + "premade compositions: standard, boonthief, w4, w6",
-          "w7")  # will add dhuum when i add rr and kite and epi
-    print(chr(7) + "Add your own composition: add")
-    print(chr(7) + "Close the program: exit")
-    print(chr(7) + "edit current team: edit")
-    print(chr(7) + "Make a new team: new")
+    print("*premade compositions: standard, boonthief, w4, w6", "w7")  # will add dhuum when i add rr and kite and epi
+    print("*Add your own composition: add")
+    print("*Close the program: exit")
+    print("*edit current team: edit")
+    print("*Make a new team: new")
     print("\n")
 
-    x = input("input: ") #user select an option here
+    x = input("input: ")  # user select an option here
     clear()
     ###########################################possible options:
     if x == "exit":
         break
 
     elif x == "standard":
-        MakeComp(permutacije.copy(), ["cTank", "druid", "bs",  "alaren", "hfb"])
+        MakeComp(permutacije.copy(), ["cTank", "druid", "bs", "alaren", "hfb"])
     elif x == "boonthief":
         MakeComp(permutacije.copy(), ["BT", "druid", "bs",  "alaren", "healscg"])
     elif x == "w4":
