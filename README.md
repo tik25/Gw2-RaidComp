@@ -8,7 +8,10 @@ Roles supported for now are: RoleList = ["solokite", "BT", "lamp", "hfb", "heals
 and are saved in program data section
 
 <b> #Todo:
-add rr, dhum kite, epi, CM compositions</b>
+add rr, dhum kite, epi, CM compositions
+<br />
+add save/load option forcompositions
+</b>
 
 
 Screenshots:
