@@ -55,17 +55,21 @@ def get_team_data():
     return 0
 
 
-def MakeComp(perm, RelevantRoles):
-    '''Create w6 composition with hfb as offheal and wyvrn kite. requires list of all permutations made from TeamData'''
+def MakeComp(perm, RelevantRoles, pylon=False):
+    '''Create all possible compositions from list "RelevantRoles".
+    Perm is calculated when the program starts and it is list of all permutations made from TeamData
+
+    RelevantRoles: list of all required roles for the encounter. Spelling must match those in RoleList in program data.
+    DO NOT INCLUDE DPS in the RelevantRoles'''
 
     clear()
     print("Calculating...")
-    NumberOfRoles= len(RelevantRoles)
+    NumberOfRoles = len(RelevantRoles)
 
     for index, possiblecomp in enumerate(perm):
         for jdex, player in enumerate(possiblecomp):
             if jdex >= NumberOfRoles:
-                continue
+                continue  # try break ?
             elif RelevantRoles[jdex] not in RoleDict[player]:
                 perm[index] = None  # isto k false ce klices bool
                 continue
@@ -75,11 +79,20 @@ def MakeComp(perm, RelevantRoles):
 
     # get rid of permutations of dps players
     for index, x in enumerate(perm):
-        for y in perm[index + 1:]:
-            if y:
-                if y[:NumberOfRoles] in list(itertools.permutations(x[:NumberOfRoles])):
-                    perm[index] = None
-                    break
+        if x:
+            for jdex, y in enumerate(perm[index + 1:]):
+                if y:
+                    if y[:NumberOfRoles] == x[:NumberOfRoles]:
+                        perm[index + 1 + jdex] = None
+
+    # get rid of permutations of pylon players
+    if pylon:
+        for index, x in enumerate(perm):
+            if x:
+                for jdex, y in enumerate(perm[index + 1:]):
+                    if y:
+                        if y[NumberOfRoles:] in list(itertools.permutations(x[NumberOfRoles:])):
+                            perm[index + 1 + jdex] = None
 
     # get rid of Nones
     compositions = remove_none(perm)
@@ -115,35 +128,35 @@ def MakeComp(perm, RelevantRoles):
     input("Press Enter to return to Menu")
 
 
-
 ################################################################################
 ############################################################################
 ############# main UI
-while (1): #i dont really know how to make a "menu" like loop so i improvise
 
-    #check if there is already player data and load it
-    try:
-        with open("TeamData.json", "r") as file:
-            players, RoleDict = json.load(file)
-    except:
-        input("It looks like this is your first time using this program. Press Enter to input team data")
-        get_team_data()
-        clear()
-
-    ###### init
-    print("Initializing...")
-    permutacije = list(itertools.permutations(players))
-
+# check if there is already player data and load it
+try:
+    with open("TeamData.json", "r") as file:
+        players, RoleDict = json.load(file)
+except:
+    input("It looks like this is your first time using this program. Press Enter to input team data")
+    get_team_data()
     clear()
 
+###### init
+print("Initializing...")
+permutacije = list(itertools.permutations(players))
+
+clear()
+
+while (1):  # i dont really know how to make a "menu" like loop so i improvise
     ###### Menu
     print("Menu:")
     print("Current possible commands are:\n")
-    print(chr(7)+"premade compositions: standard, boonthief, w4, w6") #will add dhuum when i add rr and kite and epi
-    print(chr(7)+"Add your own composition: add")
-    print(chr(7)+"Close the program: exit")
-    print(chr(7)+"edit current team: edit")
-    print(chr(7)+"Make a new team: new")
+    print(chr(7) + "premade compositions: standard, boonthief, w4, w6",
+          "w7")  # will add dhuum when i add rr and kite and epi
+    print(chr(7) + "Add your own composition: add")
+    print(chr(7) + "Close the program: exit")
+    print(chr(7) + "edit current team: edit")
+    print(chr(7) + "Make a new team: new")
     print("\n")
 
     x = input("input: ") #user select an option here
@@ -157,7 +170,7 @@ while (1): #i dont really know how to make a "menu" like loop so i improvise
     elif x == "boonthief":
         MakeComp(permutacije.copy(), ["BT", "druid", "bs",  "alaren", "healscg"])
     elif x == "w4":
-        MakeComp(permutacije.copy(), ["cTank", "druid", "bs",  "alaren", "hfb", "hk"])
+        MakeComp(permutacije.copy(), ["cTank", "druid", "bs", "alaren", "hfb", "hk"])
     elif x == "w6":
         print("there is multiple compositions available for this raid")
         print("press 1 for hfb variant OR press 2 for healscg + offchrono variant")
@@ -165,9 +178,13 @@ while (1): #i dont really know how to make a "menu" like loop so i improvise
         if x == "1":
             MakeComp(permutacije.copy(), ["solokite", "druid", "alaren", "hfb", "cTank", "lamp"])
         elif x == "2":
-            MakeComp(permutacije.copy(), ["solokite", "druid", "alaren", "healscg", "cTank", "lamp",  "offchrono"])
+            MakeComp(permutacije.copy(), ["solokite", "druid", "alaren", "healscg", "cTank", "lamp", "offchrono"])
+    elif x == "w7":
+        MakeComp(permutacije.copy(), ["cTank", "druid", "bs", "alaren", "hfb", "pylon", "pylon", "pylon"], pylon=True)
 
-
-    elif x=="new":
+    elif x == "new":
         get_team_data()
+        print("Initializing...")
+        permutacije = list(itertools.permutations(players))
 
+        clear()
