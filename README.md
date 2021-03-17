@@ -1,6 +1,7 @@
 # Gw2-RaidComp
 Used to create static team compositions
-
+<b><i>WARNING:</i></b>TeamMaker.py is now obsolete, use <b>TeamMakerUI.py</b> instead!
+<br />
 Only the <b>TeamMakerUI.py</b> is needed along with <b>PySimpleGUI</b> package for python.
 
 
