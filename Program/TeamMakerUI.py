@@ -241,13 +241,25 @@ time.sleep(1)
 os.system("cls")
 print("Ready")
 
+# zapiski
+
+notes = {
+    "1": "Recommended compositions:\n*standard -> 'cTank', 'druid', 'bs', 'alaren', 'hfb'\n\nNotes:\n*Vale guardian requires at least 2 condition dps\n*Sabetha requres 2 dedicated cannon jumpers (13 and 24), usually done by bannerslave and another dps",
+    "2": "Recommended compositions:\n*standard -> 'cTank', 'druid', 'bs', 'alaren', 'hfb'\n*boonthief (Matthias only) -> 'BT', 'druid', 'bs', 'alaren', 'healscg'\n\nNotes:\n*If you are having trouble with Matthias, use boonthief compsition",
+    "3": "Recommended compositions:\n*standard -> 'cTank', 'druid', 'bs', 'alaren', 'hfb'\n\nNotes:\n*escort towers are done by the cTank",
+    "4": "Recommended compositions:\n*deimos (hk stays dps untill last boss) -> 'cTank', 'druid', 'bs', 'alaren', 'hfb', 'hk'\n*boonthief (Mursaat Overseer only) -> 'BT', 'druid', 'bs', 'alaren', 'healscg'\n\nNotes:\n*Deimos is often tanked with hfb, letting the cTank play quicnkess dps",
+    "5": "Recommended compositions:\n*sh (Soulles Horror only) -> 'cTank', 'cTank', 'druid', 'druid', 'bs', 'alaren', 'epi'\n*dhuum (Dhuum only) -> 'cTank', 'druid', 'druid', 'qfb', 'bs', 'rr', 'rr'\n\nNotes:\n*sh has one druid as designated golem pusher\n*dhuum has one druid as stack heal, the other can be swaped for any kiting role",
+    "6": "Recommended compositions:\n*standard (Conjured Amalgamate only) -> 'cTank', 'druid', 'bs', 'alaren', 'hfb'\n*largos (split) -> 'cTank', 'cTank', 'druid', 'druid'\n*largos (portal) -> 'cTank', 'druid', 'alaren', 'hfb'\n*qadim (hfb) -> 'solokite', 'druid', 'alaren', 'hfb', 'cTank', 'lamp'\n*qadim (healscg) -> 'solokite', 'druid', 'alaren', 'healscg', 'cTank', 'lamp', 'offchrono'\n\nNotes:\n*use only power dps on Conjured Amalgamate\n*do not run bs on Twin Largos\n*best dps for Twin Largos is condition chrono\n*if you cant afford a sololamp use dps players instead\n*if you have a spellbraker you can skip stability pyre with 'winds of disenchantment'",
+    "7": "Recommended compositions:\n*qadim2 (pylon stays dps untill last boss) -> 'cTank', 'druid', 'bs', 'alaren', 'hfb', 'pylon', 'pylon', 'pylon'\n*boonthief (Adina optionally) -> 'BT', 'druid', 'bs', 'alaren'\n\nNotes:\n*if you are struggling use healscgourge on Adina/Sabir"
+}
+
 
 ################################################################################
 ############################################################################
 #############
 # --------------------------GUI
 
-def pug_window(theme):
+def WINDOW_EXAMPLE(theme):
     sg.theme(theme)
     menu_def = [['&Application', ['E&xit', '&About']]]
 
@@ -529,6 +541,131 @@ def menu_window(theme):
     return sg.Window('Gw2-RaidComp Menu', layout, element_justification="center", font=14)
 
 
+###pug windows
+def pug_window(theme):
+    sg.theme(theme)
+    menu_def = [['&Application', ['&About', 'E&xit']]]
+
+    input_layout = [[sg.Menu(menu_def)],
+                    [sg.Text('daring today are we?', size=(40, 5), justification="center")],
+                    [sg.HorizontalSeparator()],
+                    [sg.Button(button_text="1", size=(15, 3)), sg.Text("\t"),
+                     sg.Button(button_text="2", size=(15, 3)), sg.Text("\t"),
+                     sg.Button(button_text="3", size=(15, 3)), sg.Text("\t"),
+                     sg.Button(button_text="4", size=(15, 3))],
+                    [sg.Button(button_text="5", size=(15, 3)), sg.Text("\t"),
+                     sg.Button(button_text="6", size=(15, 3)), sg.Text("\t"),
+                     sg.Button(button_text="7", size=(15, 3)), sg.Text("\t"),
+                     sg.Button(button_text="8?!?", key="8", size=(15, 3))],
+                    ]
+
+    layout = [[sg.Text('Choose wing:', size=(38, 1), justification='center', font=("Helvetica", 24),
+                       relief=sg.RELIEF_RIDGE)]]  # k = event
+    layout += input_layout
+
+    return sg.Window('Gw2-RaidComp Menu', layout, element_justification="center", font=14)
+
+
+def zapiski_window(theme, wingnumber):
+    sg.theme(theme)
+    wingnames = {"1": 'Spirit Vale', "2": 'Salvation Pass', "3": 'Stronghold of the Faithful',
+                 "4": 'Bastion of the Penitent', "5": 'Hall of Chains', "6": 'Mythwright Gambit',
+                 "7": 'The Key of Ahdashim'}
+    layout = [
+        [sg.Text(wingnames[wingnumber], size=(30, 1), justification='center', font=("Helvetica", 24),
+                 relief=sg.RELIEF_RIDGE)],
+        [sg.Button("Show recommended compositions", key="Show recommended compositions{}".format(wingnumber))],
+        # nared gumb za comon comps pa pol izpise pa zravn usazga copy lfg messg
+        [sg.HorizontalSeparator()],
+        [sg.Text('Players', size=(15, 1), justification='leftside', font=("Helvetica", 16)),
+         sg.VerticalSeparator(),
+         sg.Text('Player Roles', size=(15, 1), justification='center', font=("Helvetica", 16)),
+         sg.VerticalSeparator(),
+         sg.Text('Notes', size=(15, 1), justification='side', font=("Helvetica", 16))],
+        [sg.HorizontalSeparator()],
+        [sg.Multiline('', size=(30, 3)),
+         sg.Text('      '),
+         sg.Multiline('', size=(30, 3)),
+         sg.Text('      '),
+         sg.Multiline('', size=(30, 3))],
+        [sg.HorizontalSeparator()],
+        [sg.Multiline('', size=(30, 3)),
+         sg.Text('      '),
+         sg.Multiline('', size=(30, 3)),
+         sg.Text('      '),
+         sg.Multiline('', size=(30, 3))],
+        [sg.HorizontalSeparator()],
+        [sg.Multiline('', size=(30, 3)),
+         sg.Text('      '),
+         sg.Multiline('', size=(30, 3)),
+         sg.Text('      '),
+         sg.Multiline('', size=(30, 3))],
+        [sg.HorizontalSeparator()],
+        [sg.Multiline('', size=(30, 3)),
+         sg.Text('      '),
+         sg.Multiline('', size=(30, 3)),
+         sg.Text('      '),
+         sg.Multiline('', size=(30, 3))],
+        [sg.HorizontalSeparator()],
+        [sg.Multiline('', size=(30, 3)),
+         sg.Text('      '),
+         sg.Multiline('', size=(30, 3)),
+         sg.Text('      '),
+         sg.Multiline('', size=(30, 3))],
+        [sg.HorizontalSeparator()],
+        [sg.Multiline('', size=(30, 3)),
+         sg.Text('      '),
+         sg.Multiline('', size=(30, 3)),
+         sg.Text('      '),
+         sg.Multiline('', size=(30, 3))],
+        [sg.HorizontalSeparator()],
+        [sg.Multiline('', size=(30, 3)),
+         sg.Text('      '),
+         sg.Multiline('', size=(30, 3)),
+         sg.Text('      '),
+         sg.Multiline('', size=(30, 3))],
+        [sg.HorizontalSeparator()],
+        [sg.Multiline('', size=(30, 3)),
+         sg.Text('      '),
+         sg.Multiline('', size=(30, 3)),
+         sg.Text('      '),
+         sg.Multiline('', size=(30, 3))],
+        [sg.HorizontalSeparator()],
+        [sg.Multiline('', size=(30, 3)),
+         sg.Text('      '),
+         sg.Multiline('', size=(30, 3)),
+         sg.Text('      '),
+         sg.Multiline('', size=(30, 3))],
+        [sg.HorizontalSeparator()],
+        [sg.Multiline('', size=(30, 3)),
+         sg.Text('      '),
+         sg.Multiline('', size=(30, 3)),
+         sg.Text('      '),
+         sg.Multiline('', size=(30, 3))],
+        [sg.HorizontalSeparator()],
+        [sg.Button('Menu', key='Menu', size=(12, 2), button_color="orange"), sg.Text("\t\t"),
+         sg.Button('Clear', key=wingnumber, size=(12, 2), button_color="white")]]
+
+    return sg.Window('Commanding wing {}'.format(wingnumber), layout, size=(1000, 1000), element_justification="center",
+                     font=14)
+
+
+def lfg_generator_window(theme, wingnumber):
+    sg.theme(theme)
+    menu_def = [['&Application', ['&About', 'E&xit']]]
+
+    input_layout = [[sg.Menu(menu_def)],
+                    [sg.Text(notes[wingnumber])],
+                    [sg.HorizontalSeparator()]
+                    ]
+    layout = [[sg.Text('Recommended comps:', size=(38, 1), justification='center', font=("Helvetica", 24),
+                       relief=sg.RELIEF_RIDGE)]]  # k = event
+    layout += input_layout
+
+    return sg.Window('Gw2-RaidComp Menu', layout, element_justification="center", font=14)
+
+
+###
 theme = 'Dark Blue 8'
 
 
@@ -565,6 +702,7 @@ def main(resitev):
             window.close()
             window = comp_window(theme)
         elif event == 'Static Commander':
+            name = None
             # check if there is already player data and load it
             try:
                 with open("Saves/ProgramData/MyTeams.json", "r") as file:
@@ -577,6 +715,11 @@ def main(resitev):
                 window.close()
                 event = 'Add'
                 resitev = False
+
+        elif event == 'Pug Commander':
+            window.close()
+            window = pug_window(theme)
+
 
         elif event == 'Menu':
             name = None
@@ -609,7 +752,11 @@ def main(resitev):
             window = static_window(theme, name)
             Load = True
         elif event == "Select":
-            comp = values["COMP_SELECT"][0]
+            try:
+                comp = values["COMP_SELECT"][0]
+            except:
+                sg.popup("Please select a composition", title="Error")
+                continue
             window.close()
             window = static_window(theme, name, comp)
             event, values = window.read(timeout=100)
@@ -669,8 +816,8 @@ def main(resitev):
                             json.dump(TeamData, file)
                         sg.popup_quick_message("Team successfully deleted", title="Success", auto_close_duration=1.5,
                                                background_color="green")
-                        window.close()
-                        window = choose_static_window(theme, TeamData)
+            window.close()
+            window = choose_static_window(theme, TeamData)
 
         elif event == 'DeleteComp':
             name = sg.popup_get_text("Composition name: ")
@@ -690,7 +837,16 @@ def main(resitev):
                 time.sleep(0.8)
                 window.close()
                 window = comp_window(theme)
+        elif event in ["1", "2", "3", "4", "5", "6", "7", "8"]:
+            if event == "8":
+                sg.popup("Ha, jebaited")
+            else:
+                window.close()
+                window = zapiski_window(theme, event)
 
+        elif event[:-1] == "Show recommended compositions":
+            window2 = lfg_generator_window(theme, event[-1:])
+            window2.read(timeout=100)
 
         elif event == 'Save Team':
             temp = SaveTeam(event, values, players, RoleDict)
